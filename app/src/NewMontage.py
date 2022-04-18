@@ -265,7 +265,6 @@ def query_handler(call):
 
 # проверка внесения
 def check_data(message, col, id):
-
     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     markup.add(telebot.types.KeyboardButton('Все верно'))
     markup.add(telebot.types.KeyboardButton('Внести заново'))
@@ -283,7 +282,6 @@ def check_data(message, col, id):
     bot.send_message(id, f'Верны ли данные для внесения:\n{text_montage}', reply_markup=markup)
     bot.register_next_step_handler(message, lambda msg: check_data_res(msg, col, id))
 
-
 def check_data_res(message, col, id):
     if message.text == 'Все верно':
 
@@ -292,7 +290,6 @@ def check_data_res(message, col, id):
     else:
         bot.send_message(id, 'Внесите данные снова, выбрав команду из "Меню"')
 
-
 # внесение монтажа в таблицу
 def date_montages(col, id):
     x = 0
@@ -300,38 +297,31 @@ def date_montages(col, id):
         try:
             text_montage = ""
             if montage_info[id]['days'] == 1 and col != 29:
-                bot.send_message(id, "1")
-                # time.sleep(random.randrange(0, 2))
                 value = sh.sheet1.col_values(col)
                 text_for_sheet_cell = ""
                 if montage_info[id]['inoe']:
                     text_for_sheet_cell += "$ $ $ $ $ ДОПЫ $ $ $ $ $\n"
 
-                # bot.send_message(id, "3")
                 text_for_sheet_cell += f"№: {montage_info[id]['number']}\n" \
                                        f"Цена: {montage_info[id]['price']}" \
                                        f'{montage_info[id]["stage"]}' \
                                        f"{montage_info[id]['h']}"
 
-                # bot.send_message(id, "4")
                 if montage_info[id]['inoe']:
                     text_for_sheet_cell += f'\nДоп. позиции:\n{montage_info[id]["dop_pos"]}'
                 t = value.index('') + 1
                 sh.sheet1.update_cell(t, col, text_for_sheet_cell)
 
-                # bot.send_message(id, "5")
-
-                # вносим сумму всех договоров
+                # получаем сумму всех договоров
                 text = sh.sheet1.cell(23, col).value
-                text_for_cell = int(montage_info[id]['price']) + int(text[:-8])
+                print(str(montage_info[id]['price']).split("\n")[0])
+                text_for_cell = int((montage_info[id]['price']).split("\n")[0]) + int(text[:-8])
                 sh.sheet1.update_cell(23, col, f'{text_for_cell}/800.000')
                 text_montage = text_for_sheet_cell
 
                 montage_info[id]['last date'] = sh.sheet1.cell(1, col).value
-                bot.send_message(id, "6")
             elif col != 29:
                 if (28 - col) >= montage_info[id]['days']:
-                    # time.sleep(random.randrange(0, 2))
                     # переменная для перебора свободных дней
                     colums = col
                     days = montage_info[id]['days']
@@ -383,7 +373,6 @@ def date_montages(col, id):
                         text_montage += f'\nДоп. позиции:\n{montage_info[id]["dop_pos"]}'
                 else:
                     # вносим монтаж в категорию "Иное", однако в сообщении пользователю говорим точные даты (монтаж просто "не вместился в следующую неделю")
-                    # time.sleep(random.randrange(0, 2))
                     value = sh.sheet1.col_values(29)
                     x = value.index('#') + 1
                     if sh.sheet1.cell(x + 1, 15).value == '' or '#':
@@ -446,11 +435,10 @@ def date_montages(col, id):
                 sh.sheet1.update_cell(x, col, text_montage)
 
             if montage_info[id]['days'] == 1:
+                print(5)
                 text = f"Внесено\n{text_montage}\nДень начала монтажа: {montage_info[id]['last date']}"
-                bot.send_message(id, "8")
             else:
                 text = f"Внесено\n{text_montage}\nДаты монтажа: {montage_info[id]['last date']}"
-                bot.send_message(id, "9")
             x = 2
             return text
         except:

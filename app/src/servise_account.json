@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "projectdata",
+  "private_key_id": "asdasdasd98c9cv",
+  "private_key": "-----BEGIN PRIVATE KEY-----\your key here\n-----END PRIVATE KEY-----\n",
+  "client_email": "admin-416@deckendata.iam.gserviceaccount.com",
+  "client_id": "15357567568",
+  "auth_uri": "https://accounts.google.com/auth",
+  "token_uri": "https://googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/admin-416%40deckendata.iam.gserviceaccount.com"
+}
